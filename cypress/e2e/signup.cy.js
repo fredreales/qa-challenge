@@ -19,7 +19,7 @@ const randomBirthDate = faker.date.between({ from: '1950-01-01', to: '2004-12-31
 const formattedBirthDate = formatDate(randomBirthDate);
 describe('signup page', () => {
   beforeEach(() => {
-    cy.visit(Cypress.config('baseUrl'))
+    cy.visit(Cypress.env('baseUrl'))
     cy.contains('button', 'Fazer inscrição').click()
   });
 
