@@ -19,7 +19,7 @@ const randomBirthDate = faker.date.between({ from: '1950-01-01', to: '2004-12-31
 const formattedBirthDate = formatDate(randomBirthDate);
 describe('signup page', () => {
   beforeEach(() => {
-    cy.visit('https://qastage.buildbox.one/18/cadastro/')
+    cy.visit(Cypress.config('baseUrl'))
     cy.contains('button', 'Fazer inscrição').click()
   });
 
@@ -69,17 +69,16 @@ describe('signup page', () => {
   });
 
   it('email and CPF already in use', () => {
-    const CEP = '88051011'
-    const number = '10'
-    const complement = 'casa'
-    cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
-    cy.fillFormAddress(CEP, number, complement)
-
-    cy.visit('https://qastage.buildbox.one/18/cadastro/')
-    cy.contains('button', 'Fazer inscrição').click()
-
+    
     cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
     cy.get('.input-error').should('be.visible')
+    // cy.fillFormAddress(CEP, number, complement)
+
+    // cy.visit(Cypress.config('baseUrl'))
+    // cy.contains('button', 'Fazer inscrição').click()
+
+    // cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
+    // cy.get('.input-error').should('be.visible')
 
   });
 
@@ -87,6 +86,8 @@ describe('signup page', () => {
     const CEP = '33333333'
     const number = '10'
     const complement = 'casa'
+    const email = 'teste@teste.com'
+    const cpfNumber = '864.038.780-00'
     cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
     cy.fillFormAddress(CEP, number, complement)
     cy.contains('.toast', 'CEP não encontrado.').should('be.visible')
