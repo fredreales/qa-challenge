@@ -93,8 +93,8 @@ describe('signup page', () => {
 
   });
 
-  it.only('wrong birthdate', () => {
-    const formattedBirthDate = 'aaa'
+  it('wrong birthdate', () => {
+    const formattedBirthDate = '32/13/2025'
     cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
     cy.get('.input-error').should('be.visible')
   });
