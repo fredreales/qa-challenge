@@ -69,16 +69,8 @@ describe('signup page', () => {
   });
 
   it('email and CPF already in use', () => {
-    
     cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
     cy.get('.input-error').should('be.visible')
-    // cy.fillFormAddress(CEP, number, complement)
-
-    // cy.visit(Cypress.config('baseUrl'))
-    // cy.contains('button', 'Fazer inscrição').click()
-
-    // cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
-    // cy.get('.input-error').should('be.visible')
 
   });
 
