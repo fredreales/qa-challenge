@@ -1,0 +1,19 @@
+{
+  "name": "qa-challenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
+    "cypress": "^13.7.3"
+  },
+  "dependencies": {
+    "cpf-cnpj-validator": "^1.0.3"
+  }
+}
