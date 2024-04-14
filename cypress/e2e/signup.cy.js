@@ -42,7 +42,6 @@ describe('signup page', () => {
     cy.get('#signup-personal-data-lastName').clear()
     cy.get('#signup_submit_button_1').click()
     cy.get('#signup-personal-data-lastName:invalid').should('exist')
-
   });
 
 
@@ -51,13 +50,11 @@ describe('signup page', () => {
     cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
     cy.get('#signup_submit_button_1').click()
     cy.get('.input-error').should('be.visible')
-
   });
 
   it('email e/ou CPF ja estao em uso', () => {
     cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
     cy.get('.input-error').should('be.visible')
-
   });
 
   it('CEP nao encontrado', () => {
@@ -70,7 +67,6 @@ describe('signup page', () => {
     cy.get('#signup_submit_button_1').click()
     cy.fillFormAddress(CEP, number, complement)
     cy.contains('.toast', 'CEP não encontrado.').should('be.visible')
-
   });
 
   it('data de nascimento no formato errado', () => {
@@ -84,7 +80,6 @@ describe('signup page', () => {
     cy.get('#signup-personal-data-password').type(password)
     cy.get('#signup-personal-data-password').should('have.attr', 'data-too-short', 'Insira uma senha válida')  //minlenght=5
     cy.get('.input-error').should('be.visible')
-    // cy.get('#signup_submit_button_1').click()
   });
 
   it('campo nome/sobrenome devem poossuir 4 caracteres ou mais', () => { //bug cypress (https://github.com/cypress-io/cypress/issues/14911) e (https://github.com/cypress-io/cypress/issues/6678)
@@ -92,7 +87,6 @@ describe('signup page', () => {
     cy.get('#signup-personal-data-firstName').type(firstName)
     cy.get('#signup-personal-data-firstName').should('have.attr', 'data-too-short', 'Preencha corretamente') //minlenght=4
     cy.get('.input-error').should('be.visible')
-
   });
 
 })
