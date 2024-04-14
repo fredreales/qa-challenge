@@ -23,7 +23,7 @@ describe('signup page', () => {
     cy.contains('button', 'Fazer inscrição').click()
   });
 
-  it('fill forms and submit sucessfully', () => {
+  it('preenche formularios e envia', () => {
     cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
     cy.get('#signup_submit_button_1').click()
     cy.contains('h2', 'Endereço').should('be.visible')
@@ -37,7 +37,7 @@ describe('signup page', () => {
     cy.contains('h1', 'Thank you for joining us!').should('be.visible')
   });
 
-  it('should not submit and show a message indicating a required field is missing', () => {
+  it('nao deve enviar quando um campo required esta vazio, mostrando uma mensagem', () => {
     cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
     cy.get('#signup-personal-data-lastName').clear()
     cy.get('#signup_submit_button_1').click()
@@ -46,7 +46,7 @@ describe('signup page', () => {
   });
 
 
-  it('doesnt submit when the email field has the wrong format', () => {
+  it('nao deve submeter quando o campo email esta no formato errado', () => {
     const email = 'abcde'
     cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
     cy.get('#signup_submit_button_1').click()
@@ -54,13 +54,13 @@ describe('signup page', () => {
 
   });
 
-  it('email and CPF already in use', () => {
+  it('email e/ou CPF ja estao em uso', () => {
     cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
     cy.get('.input-error').should('be.visible')
 
   });
 
-  it('CEP not found', () => {
+  it('CEP nao encontrado', () => {
     const CEP = '33333333'
     const number = '10'
     const complement = 'casa'
@@ -73,13 +73,13 @@ describe('signup page', () => {
 
   });
 
-  it('wrong birthdate', () => {
+  it('data de nascimento no formato errado', () => {
     const formattedBirthDate = '32/13/2025'
     cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
     cy.get('.input-error').should('be.visible')
   });
 
-  it.only('password should be 5 characters or more', () => { //bug cypress, não está validando o campo, porém quando digitado manualmente não é permitido senhas com menos de 5 caracteres
+  it.only('campo senha deve ter 5 caracteres ou mais', () => { //bug cypress, não está validando o campo, porém quando digitado manualmente não é permitido senhas com menos de 5 caracteres
     const password = 'abcd'
     cy.get('#signup-personal-data-password').type(password)
     cy.get('#signup-personal-data-password').should('have.attr', 'data-too-short', 'Insira uma senha válida')  //minlenght=5
@@ -87,7 +87,7 @@ describe('signup page', () => {
     // cy.get('#signup_submit_button_1').click()
   });
 
-  it('fields name and lastname should only accept 4 or more characters', () => { //bug cypress (https://github.com/cypress-io/cypress/issues/14911) e (https://github.com/cypress-io/cypress/issues/6678)
+  it('campo nome/sobrenome devem poossuir 4 caracteres ou mais', () => { //bug cypress (https://github.com/cypress-io/cypress/issues/14911) e (https://github.com/cypress-io/cypress/issues/6678)
     const firstName = 'abc'
     cy.get('#signup-personal-data-firstName').type(firstName)
     cy.get('#signup-personal-data-firstName').should('have.attr', 'data-too-short', 'Preencha corretamente') //minlenght=4
