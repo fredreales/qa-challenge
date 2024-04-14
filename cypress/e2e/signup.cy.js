@@ -1,18 +1,18 @@
-import { faker } from '@faker-js/faker';
-import { cpf } from 'cpf-cnpj-validator';
+import { faker } from '@faker-js/faker'
+import { cpf } from 'cpf-cnpj-validator'
 
-const firstName = faker.person.firstName();
-const lastName = faker.person.lastName();
-const email = faker.internet.email();
+const firstName = faker.person.firstName()
+const lastName = faker.person.lastName()
+const email = faker.internet.email()
 const cpfNumber = cpf.generate()
-const password = faker.internet.password();
+const password = faker.internet.password()
 
 // função para formatar a data no formato dd/mm/aaaa
 function formatDate(date) {
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
+  return `${day}/${month}/${year}`
 }
 const randomBirthDate = faker.date.between({ from: '1950-01-01', to: '2004-12-31' })
 // formatar a data de nascimento para o formato dd/mm/aaaa
@@ -25,6 +25,7 @@ describe('signup page', () => {
 
   it('fill forms and submit sucessfully', () => {
     cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
+    cy.get('#signup_submit_button_1').click()
     cy.contains('h2', 'Endereço').should('be.visible')
 
     const CEP = '88051011'
@@ -32,6 +33,7 @@ describe('signup page', () => {
     const complement = 'casa'
 
     cy.fillFormAddress(CEP, number, complement)
+    cy.get('#signup_submit_button_3').click()
     cy.contains('h1', 'Thank you for joining us!').should('be.visible')
   });
 
@@ -43,22 +45,6 @@ describe('signup page', () => {
 
   });
 
-  it('password should be 5 characters or more', () => { //bug cypress, não está validando o campo, porém quando digitado manualmente não é permitido senhas com menos de 5 caracteres
-    const password = 'abc'
-    cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
-    cy.get('#signup-personal-data-lgpd').check()
-    cy.get('#signup_submit_button_1').click()
-
-  });
-
-  it('fields name and lastname should only accept 4 or more characters', () => { //bug cypress (https://github.com/cypress-io/cypress/issues/14911) e (https://github.com/cypress-io/cypress/issues/6678)
-    const firstName = 'ab'
-    const lastName = 'bc'
-    cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
-    cy.get('#signup_submit_button_1').click()
-    cy.get('.input-error').should('be.visible')
-
-  });
 
   it('doesnt submit when the email field has the wrong format', () => {
     const email = 'abcde'
@@ -81,6 +67,7 @@ describe('signup page', () => {
     const email = 'teste@teste.com'
     const cpfNumber = '864.038.780-00'
     cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
+    cy.get('#signup_submit_button_1').click()
     cy.fillFormAddress(CEP, number, complement)
     cy.contains('.toast', 'CEP não encontrado.').should('be.visible')
 
@@ -91,5 +78,22 @@ describe('signup page', () => {
     cy.fillFormPersonalData(firstName, lastName, formattedBirthDate, cpfNumber, email, password)
     cy.get('.input-error').should('be.visible')
   });
+
+  it.only('password should be 5 characters or more', () => { //bug cypress, não está validando o campo, porém quando digitado manualmente não é permitido senhas com menos de 5 caracteres
+    const password = 'abcd'
+    cy.get('#signup-personal-data-password').type(password)
+    cy.get('#signup-personal-data-password').should('have.attr', 'data-too-short', 'Insira uma senha válida')  //minlenght=5
+    cy.get('.input-error').should('be.visible')
+    // cy.get('#signup_submit_button_1').click()
+  });
+
+  it('fields name and lastname should only accept 4 or more characters', () => { //bug cypress (https://github.com/cypress-io/cypress/issues/14911) e (https://github.com/cypress-io/cypress/issues/6678)
+    const firstName = 'abc'
+    cy.get('#signup-personal-data-firstName').type(firstName)
+    cy.get('#signup-personal-data-firstName').should('have.attr', 'data-too-short', 'Preencha corretamente') //minlenght=4
+    cy.get('.input-error').should('be.visible')
+
+  });
+
 })
 

@@ -6,12 +6,11 @@ Cypress.Commands.add('fillFormPersonalData', (firstName, lastName, formattedBirt
   cy.get('#signup-personal-data-cpf').type(cpfNumber)
   cy.get('#signup-personal-data-email').type(email)
   cy.get('#signup-personal-data-email-confirm').type(email)
-  cy.get('#signup-personal-data-password').type(password)
+  cy.get('#signup-personal-data-password').type(password, { log: false })
   cy.get('#signup-personal-data-password-confirm').type(password, { log: false })
   cy.get('[aria-controls="dropdown-button-1"]').click()
   cy.contains('[x-text="option.value"]', 'Advanced').click()
   cy.get('#signup-personal-data-lgpd').check()
-  cy.get('#signup_submit_button_1').click()
   
 });
 
@@ -22,7 +21,6 @@ Cypress.Commands.add('fillFormAddress', (CEP, number, complement) => {
   cy.wait('@getCEP')
   cy.get('#signup-address-number').type(number)
   cy.get('#signup-address-complement').type(complement)
-  cy.get('#signup_submit_button_3').click()
   
 });
 
